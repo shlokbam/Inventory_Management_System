@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from . import models, database, auth
+from . import models, database, auth, seed
 from .routers import auth_router, products, categories, batches, customers, invoices, transactions, reports, payments
 
 # models.Base.metadata.create_all(bind=database.engine) # Moved to startup_event
@@ -16,13 +16,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize Admin User if not exists
+# Initialize Admin User and Seed Data if not exists
 @app.on_event("startup")
 def startup_event():
     # Create tables on startup
     models.Base.metadata.create_all(bind=database.engine)
     db = database.SessionLocal()
     try:
+        # Auto-seed if database is empty
+        if db.query(models.Category).count() == 0:
+            print("Database empty. Seeding sample data...")
+            seed.seed_data()
+            print("Seeding complete.")
+            
         admin_user = db.query(models.User).filter(models.User.username == "admin").first()
         if not admin_user:
             hashed_pwd = auth.get_password_hash("admin123")

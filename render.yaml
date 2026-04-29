@@ -2,10 +2,10 @@ services:
   # Backend Web Service
   - type: web
     name: ims-backend
-    env: python
+    runtime: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn -k uvicorn.workers.UvicornWorker app.main:app
-    rootDirectory: backend
+    rootDir: backend
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -19,10 +19,10 @@ services:
   # Frontend Static Site
   - type: web
     name: ims-frontend
-    env: static
-    rootDirectory: frontend
+    runtime: static
+    rootDir: frontend
     buildCommand: npm install && npm run build
-    publishPath: dist
+    publishDir: dist
     envVars:
       - key: VITE_API_URL
         fromService:

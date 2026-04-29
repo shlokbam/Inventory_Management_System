@@ -8,3 +8,4 @@ python-multipart
 pandas
 gunicorn
 psycopg2-binary
+email-validator

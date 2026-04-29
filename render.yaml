@@ -2,6 +2,7 @@ services:
   # Backend Web Service
   - type: web
     name: ims-backend
+    plan: free
     runtime: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn -k uvicorn.workers.UvicornWorker app.main:app
@@ -19,6 +20,7 @@ services:
   # Frontend Static Site
   - type: web
     name: ims-frontend
+    plan: free
     runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build

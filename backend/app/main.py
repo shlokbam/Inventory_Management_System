@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from . import models, database, auth
 from .routers import auth_router, products, categories, batches, customers, invoices, transactions, reports, payments
 
-models.Base.metadata.create_all(bind=database.engine)
+# models.Base.metadata.create_all(bind=database.engine) # Moved to startup_event
 
 app = FastAPI(title="Inventory Management System")
 
@@ -19,6 +19,8 @@ app.add_middleware(
 # Initialize Admin User if not exists
 @app.on_event("startup")
 def startup_event():
+    # Create tables on startup
+    models.Base.metadata.create_all(bind=database.engine)
     db = database.SessionLocal()
     try:
         admin_user = db.query(models.User).filter(models.User.username == "admin").first()

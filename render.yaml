@@ -25,10 +25,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: ims-backend
-          property: url
+        value: https://ims-backend.onrender.com
 
 databases:
   - name: ims-db

@@ -11,3 +11,4 @@ psycopg2-binary
 email-validator
 requests
 xhtml2pdf
+python-bidi<0.6.0

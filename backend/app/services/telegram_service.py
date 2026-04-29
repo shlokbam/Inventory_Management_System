@@ -26,9 +26,13 @@ def send_telegram_message(chat_id: str, message: str):
     payload = {"chat_id": chat_id, "text": message, "parse_mode": "HTML"}
     try:
         response = requests.post(url, json=payload)
+        if response.status_code != 200:
+            print(f"DEBUG: Telegram API Error ({response.status_code}): {response.text}")
+        else:
+            print("DEBUG: Telegram message sent successfully!")
         return response.status_code == 200
     except Exception as e:
-        print(f"DEBUG: EXCEPTION - {e}")
+        print(f"DEBUG: EXCEPTION in send_telegram_message - {e}")
         return False
 
 def send_telegram_document(chat_id: str, document_bytes: BytesIO, filename: str):

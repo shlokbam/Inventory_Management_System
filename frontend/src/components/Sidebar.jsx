@@ -11,10 +11,11 @@ import {
   Users, 
   LogOut,
   Files,
-  IndianRupee
+  IndianRupee,
+  X
 } from 'lucide-react';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
   const { user, logout } = useAuth();
   
   const adminLinks = [
@@ -37,12 +38,19 @@ const Sidebar = () => {
   const links = user.role === 'admin' ? adminLinks : staffLinks;
 
   return (
-    <div className="sidebar" style={{ display: 'flex', flexDirection: 'column', height: '100vh', position: 'sticky', top: 0 }}>
-      <div style={{ padding: '0 0.5rem 2rem', borderBottom: '1px solid #334155', marginBottom: '2rem' }}>
+    <div className={`sidebar ${isOpen ? 'open' : ''}`} style={{ display: 'flex', flexDirection: 'column', height: '100vh', position: 'sticky', top: 0 }}>
+      <div style={{ padding: '0 0.5rem 2rem', borderBottom: '1px solid #334155', marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <Database size={28} color="#818cf8" />
           IMS Pro
         </h1>
+        <button 
+          onClick={onClose}
+          className="mobile-only"
+          style={{ background: 'transparent', border: 'none', color: '#94a3b8', display: 'none' }}
+        >
+          <X size={24} />
+        </button>
       </div>
       
       <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -50,6 +58,7 @@ const Sidebar = () => {
           <NavLink 
             key={link.to} 
             to={link.to}
+            onClick={onClose}
             style={({ isActive }) => ({
               display: 'flex',
               alignItems: 'center',

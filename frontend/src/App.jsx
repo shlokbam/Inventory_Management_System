@@ -14,9 +14,11 @@ import StaffBilling from './pages/Staff/Billing';
 import StaffCatalog from './pages/Staff/ProductCatalog';
 import StaffPayments from './pages/Staff/Payments';
 import Sidebar from './components/Sidebar';
+import { Menu, X } from 'lucide-react';
 
 const ProtectedRoute = ({ children, role }) => {
   const { user, loading } = useAuth();
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   
   if (loading) return <div>Loading...</div>;
   if (!user) return <Navigate to="/login" />;
@@ -26,7 +28,19 @@ const ProtectedRoute = ({ children, role }) => {
   
   return (
     <div className="layout">
-      <Sidebar />
+      <div className={`overlay ${isSidebarOpen ? 'active' : ''}`} onClick={() => setIsSidebarOpen(false)}></div>
+      
+      <div className="mobile-header">
+        <h1 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>IMS Pro</h1>
+        <button 
+          onClick={() => setIsSidebarOpen(true)}
+          style={{ background: 'transparent', border: 'none', color: 'white' }}
+        >
+          <Menu size={28} />
+        </button>
+      </div>
+
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <div className="main-content">
         {children}
       </div>

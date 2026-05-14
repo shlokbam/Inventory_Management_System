@@ -43,19 +43,19 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div className="header-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Admin Dashboard</h1>
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <button onClick={() => handleExport('products')} className="btn btn-secondary">
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <button onClick={() => handleExport('products')} className="btn btn-secondary" style={{ width: 'auto' }}>
             <Download size={18} /> Products CSV
           </button>
-          <button onClick={() => handleExport('sales')} className="btn btn-secondary">
+          <button onClick={() => handleExport('sales')} className="btn btn-secondary" style={{ width: 'auto' }}>
             <Download size={18} /> Sales CSV
           </button>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
+      <div className="stat-grid">
         <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div style={{ background: '#e0e7ff', padding: '1rem', borderRadius: '1rem' }}>
             <Package color="#4f46e5" size={24} />
@@ -105,7 +105,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
+      <div className="grid-2-1">
         <div className="card">
           <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1rem' }}>Low Stock Alerts</h2>
           <div className="table-container">

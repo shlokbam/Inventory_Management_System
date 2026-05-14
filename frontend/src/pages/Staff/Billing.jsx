@@ -232,7 +232,7 @@ const StaffBilling = () => {
   }
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '2rem', height: 'calc(100vh - 120px)' }}>
+    <div className="pos-grid">
       {/* Product Selection Side */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         <div className="card">
@@ -248,7 +248,7 @@ const StaffBilling = () => {
         </div>
 
         <div className="card" style={{ flex: 1, overflowY: 'auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
             {products.filter(p => p.name.toLowerCase().includes(search.toLowerCase()) || p.sku.toLowerCase().includes(search.toLowerCase())).map(p => {
               const stock = p.batches.reduce((sum, b) => sum + b.quantity, 0);
               return (

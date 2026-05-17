@@ -6,6 +6,13 @@ import random
 def seed_data():
     db = SessionLocal()
     try:
+        # Delete existing data to avoid unique constraint errors on re-run
+        db.query(models.Transaction).delete()
+        db.query(models.Batch).delete()
+        db.query(models.Product).delete()
+        db.query(models.Category).delete()
+        db.commit()
+
         # 1. Categories
         electronics = models.Category(name="Electronics")
         groceries = models.Category(name="Groceries")
@@ -107,8 +114,8 @@ def seed_data():
         print("Database seeded successfully with richer data!")
 
     except Exception as e:
-        print(f"Error seeding database: {e}")
         db.rollback()
+        raise e
     finally:
         db.close()
 

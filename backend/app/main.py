@@ -60,8 +60,11 @@ app.include_router(payments.router, prefix="/payments", tags=["Payments"])
 
 @app.post("/api/seed")
 def trigger_seed():
-    seed.seed_data()
-    return {"message": "Database seeded successfully with richer data!"}
+    try:
+        seed.seed_data()
+        return {"message": "Database seeded successfully with richer data!"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/")
 def read_root():

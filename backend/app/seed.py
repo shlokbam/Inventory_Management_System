@@ -7,10 +7,15 @@ def seed_data():
     db = SessionLocal()
     try:
         # Delete existing data to avoid unique constraint errors on re-run
+        # Child tables first to avoid ForeignKey violations!
+        db.query(models.Payment).delete()
+        db.query(models.InvoiceItem).delete()
+        db.query(models.Invoice).delete()
         db.query(models.Transaction).delete()
         db.query(models.Batch).delete()
         db.query(models.Product).delete()
         db.query(models.Category).delete()
+        db.query(models.Customer).delete()
         db.commit()
 
         # 1. Categories

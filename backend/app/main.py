@@ -58,6 +58,11 @@ app.include_router(transactions.router, prefix="/transactions", tags=["Transacti
 app.include_router(reports.router, prefix="/reports", tags=["Reports"])
 app.include_router(payments.router, prefix="/payments", tags=["Payments"])
 
+@app.post("/api/seed")
+def trigger_seed():
+    seed.seed_data()
+    return {"message": "Database seeded successfully with richer data!"}
+
 @app.get("/")
 def read_root():
     return {"message": "Welcome to IMS API"}

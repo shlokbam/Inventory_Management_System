@@ -102,7 +102,7 @@ const AdminProducts = () => {
                 <td style={{ fontWeight: 600 }}>{p.sku}</td>
                 <td>{p.name}</td>
                 <td>{categories.find(c => c.id === p.category_id)?.name || 'N/A'}</td>
-                <td>${p.price.toFixed(2)}</td>
+                <td>₹{p.price.toFixed(2)}</td>
                 <td style={{ textAlign: 'right' }}>
                   <button onClick={() => openEdit(p)} style={{ background: 'none', border: 'none', color: 'var(--primary)', marginRight: '1rem' }}><Edit size={18} /></button>
                   <button onClick={() => handleDelete(p.id)} style={{ background: 'none', border: 'none', color: 'var(--danger)' }}><Trash2 size={18} /></button>
@@ -134,7 +134,7 @@ const AdminProducts = () => {
                 </select>
               </div>
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem' }}>Price ($)</label>
+                <label style={{ display: 'block', marginBottom: '0.5rem' }}>Price (₹)</label>
                 <input type="number" step="0.01" required style={{ width: '100%' }} value={formData.price} onChange={e => setFormData({...formData, price: parseFloat(e.target.value)})} />
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>

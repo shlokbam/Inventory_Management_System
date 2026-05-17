@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '../../api/apiClient';
-import { Package, DollarSign, AlertTriangle, Activity, Download, Clock } from 'lucide-react';
+import { Package, IndianRupee, AlertTriangle, Activity, Download, Clock } from 'lucide-react';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
@@ -62,16 +62,18 @@ const AdminDashboard = () => {
           </div>
           <div>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Total Products</p>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{stats?.total_products}</h3>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{stats?.total_products}</h3>
           </div>
         </div>
         <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div style={{ background: '#dcfce7', padding: '1rem', borderRadius: '1rem' }}>
-            <DollarSign color="#22c55e" size={24} />
+            <IndianRupee color="#22c55e" size={24} />
           </div>
           <div>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Inventory Value</p>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>${stats?.total_inventory_value.toFixed(2)}</h3>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', wordBreak: 'break-word' }}>
+              ₹{stats?.total_inventory_value?.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </h3>
           </div>
         </div>
         <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -80,7 +82,7 @@ const AdminDashboard = () => {
           </div>
           <div>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Low Stock Items</p>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{stats?.low_stock_alerts.length}</h3>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{stats?.low_stock_alerts.length}</h3>
           </div>
         </div>
         <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -89,7 +91,7 @@ const AdminDashboard = () => {
           </div>
           <div>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Recent Movement</p>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{stats?.recent_transactions.length}</h3>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{stats?.recent_transactions.length}</h3>
           </div>
         </div>
         <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', border: stats?.expired_products?.length > 0 ? '1px solid #fca5a5' : undefined }}>
@@ -98,7 +100,7 @@ const AdminDashboard = () => {
           </div>
           <div>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Expired Items</p>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: stats?.expired_products?.length > 0 ? '#e11d48' : 'inherit' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: stats?.expired_products?.length > 0 ? '#e11d48' : 'inherit' }}>
               {stats?.expired_products?.length ?? 0}
             </h3>
           </div>

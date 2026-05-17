@@ -196,7 +196,7 @@ td {
 }
 
 @media (min-width: 1025px) {
-  .mobile-header {
+  .mobile-header, .overlay {
     display: none;
   }
 }

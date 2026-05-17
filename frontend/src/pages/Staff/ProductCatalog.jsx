@@ -62,7 +62,7 @@ const StaffCatalog = () => {
                   <td style={{ fontWeight: 600 }}>{p.sku}</td>
                   <td>{p.name}</td>
                   <td>{categories.find(c => c.id === p.category_id)?.name || 'N/A'}</td>
-                  <td>${p.price.toFixed(2)}</td>
+                  <td>₹{p.price.toFixed(2)}</td>
                   <td>
                     {totalStock > 10 ? (
                       <span className="badge badge-in">In Stock ({totalStock})</span>

@@ -64,6 +64,10 @@ const AdminStock = () => {
 
   if (loading) return <div>Loading...</div>;
 
+  const displayedTransactions = formData.product_id 
+    ? transactions.filter(t => t.product_id === parseInt(formData.product_id))
+    : transactions.slice(0, 10);
+
   return (
     <div>
       <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '2rem' }}>Stock Management (IN)</h1>
@@ -142,7 +146,7 @@ const AdminStock = () => {
         <div>
           <div className="card" style={{ height: '100%' }}>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <History size={20} /> Recent Stock IN History
+              <History size={20} /> {formData.product_id ? 'Product Stock History' : 'Recent Stock IN History'}
             </h2>
             
             <div className="table-container" style={{ maxHeight: '500px', overflowY: 'auto' }}>
@@ -155,7 +159,7 @@ const AdminStock = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {transactions.map(t => (
+                  {displayedTransactions.map(t => (
                     <tr key={t.id}>
                       <td style={{ fontWeight: 500 }}>{getProductName(t.product_id)}</td>
                       <td>
@@ -166,10 +170,10 @@ const AdminStock = () => {
                       </td>
                     </tr>
                   ))}
-                  {transactions.length === 0 && (
+                  {displayedTransactions.length === 0 && (
                     <tr>
                       <td colSpan="3" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
-                        No recent stock additions
+                        {formData.product_id ? 'No stock history found for this product.' : 'No recent stock additions.'}
                       </td>
                     </tr>
                   )}

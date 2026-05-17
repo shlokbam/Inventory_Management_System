@@ -68,31 +68,33 @@ const InvoiceRow = ({ inv, index }) => {
       {/* Item breakdown */}
       {open && (
         <div style={{ padding: '0 1.25rem 1rem' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '0.75rem' }}>
-            <thead>
-              <tr style={{ background: '#f1f5f9' }}>
-                <th style={{ padding: '0.6rem 0.75rem', textAlign: 'left', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Product</th>
-                <th style={{ padding: '0.6rem 0.75rem', textAlign: 'right', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Qty</th>
-                <th style={{ padding: '0.6rem 0.75rem', textAlign: 'right', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Unit Price</th>
-                <th style={{ padding: '0.6rem 0.75rem', textAlign: 'right', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Subtotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              {inv.items.map((item, i) => (
-                <tr key={i} style={{ borderTop: '1px solid var(--border)' }}>
-                  <td style={{ padding: '0.6rem 0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Package size={14} color="#4f46e5" />
-                    {item.product_name}
-                  </td>
-                  <td style={{ padding: '0.6rem 0.75rem', textAlign: 'right' }}>{item.quantity}</td>
-                  <td style={{ padding: '0.6rem 0.75rem', textAlign: 'right' }}>₹{item.price.toFixed(2)}</td>
-                  <td style={{ padding: '0.6rem 0.75rem', textAlign: 'right', fontWeight: 600, color: '#4f46e5' }}>
-                    ₹{item.subtotal.toFixed(2)}
-                  </td>
+          <div className="table-container">
+            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '0.75rem' }}>
+              <thead>
+                <tr style={{ background: '#f1f5f9' }}>
+                  <th style={{ padding: '0.6rem 0.75rem', textAlign: 'left', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Product</th>
+                  <th style={{ padding: '0.6rem 0.75rem', textAlign: 'right', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Qty</th>
+                  <th style={{ padding: '0.6rem 0.75rem', textAlign: 'right', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Unit Price</th>
+                  <th style={{ padding: '0.6rem 0.75rem', textAlign: 'right', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Subtotal</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {inv.items.map((item, i) => (
+                  <tr key={i} style={{ borderTop: '1px solid var(--border)' }}>
+                    <td style={{ padding: '0.6rem 0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <Package size={14} color="#4f46e5" />
+                      {item.product_name}
+                    </td>
+                    <td style={{ padding: '0.6rem 0.75rem', textAlign: 'right' }}>{item.quantity}</td>
+                    <td style={{ padding: '0.6rem 0.75rem', textAlign: 'right' }}>₹{item.price.toFixed(2)}</td>
+                    <td style={{ padding: '0.6rem 0.75rem', textAlign: 'right', fontWeight: 600, color: '#4f46e5' }}>
+                      ₹{item.subtotal.toFixed(2)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

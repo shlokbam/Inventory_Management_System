@@ -1,28 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '../../api/apiClient';
 import { Package, IndianRupee, AlertTriangle, Activity, Download, Clock } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
+  const [invoices, setInvoices] = useState([]);
+  const [inventoryStatus, setInventoryStatus] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const formatDate = (dateStr) => {
     if (!dateStr) return null;
-    // Backend sends UTC naive strings. Append 'Z' to treat as UTC and convert to local.
     return new Date(dateStr.endsWith('Z') || dateStr.includes('+') ? dateStr : `${dateStr}Z`);
   };
 
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchData = async () => {
       try {
-        const res = await apiClient.get('/reports/stats');
-        setStats(res.data);
+        const [statsRes, invRes, statusRes] = await Promise.all([
+          apiClient.get('/reports/stats'),
+          apiClient.get('/invoices'),
+          apiClient.get('/reports/inventory-status')
+        ]);
+        setStats(statsRes.data);
+        setInvoices(invRes.data);
+        setInventoryStatus(statusRes.data);
       } catch (err) {
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
-    fetchStats();
+    fetchData();
   }, []);
 
   const handleExport = async (type) => {
@@ -39,7 +48,48 @@ const AdminDashboard = () => {
     }
   };
 
+  const processRevenueData = () => {
+    const days = 7;
+    const data = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dateStr = d.toISOString().split('T')[0];
+      
+      const dayInvoices = invoices.filter(inv => {
+        const invDate = formatDate(inv.created_at);
+        return invDate && invDate.toISOString().split('T')[0] === dateStr;
+      });
+      
+      const total = dayInvoices.reduce((sum, inv) => sum + inv.total_amount, 0);
+      data.push({
+        date: d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }),
+        revenue: total
+      });
+    }
+    return data;
+  };
+
+  const processCategoryData = () => {
+    const categoryMap = {};
+    inventoryStatus.forEach(item => {
+      const value = item.current_stock * item.price;
+      if (value > 0) {
+        categoryMap[item.category] = (categoryMap[item.category] || 0) + value;
+      }
+    });
+    return Object.keys(categoryMap).map(key => ({
+      name: key,
+      value: categoryMap[key]
+    })).sort((a, b) => b.value - a.value);
+  };
+
+  const COLORS = ['#4f46e5', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#f97316'];
+
   if (loading) return <div>Loading dashboard...</div>;
+
+  const revenueData = processRevenueData();
+  const categoryData = processCategoryData();
 
   return (
     <div>
@@ -85,15 +135,7 @@ const AdminDashboard = () => {
             <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{stats?.low_stock_alerts.length}</h3>
           </div>
         </div>
-        <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <div style={{ background: '#fef3c7', padding: '1rem', borderRadius: '1rem' }}>
-            <Activity color="#f59e0b" size={24} />
-          </div>
-          <div>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Recent Movement</p>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{stats?.recent_transactions.length}</h3>
-          </div>
-        </div>
+
         <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', border: stats?.expired_products?.length > 0 ? '1px solid #fca5a5' : undefined }}>
           <div style={{ background: '#ffe4e6', padding: '1rem', borderRadius: '1rem' }}>
             <Clock color="#e11d48" size={24} />
@@ -103,6 +145,71 @@ const AdminDashboard = () => {
             <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: stats?.expired_products?.length > 0 ? '#e11d48' : 'inherit' }}>
               {stats?.expired_products?.length ?? 0}
             </h3>
+          </div>
+        </div>
+      </div>
+
+      {/* Analytics Charts */}
+      <div className="grid-2-1" style={{ marginBottom: '2rem' }}>
+        <div className="card">
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Revenue (Last 7 Days)</h2>
+          <div style={{ width: '100%', height: 300 }}>
+            <ResponsiveContainer>
+              <BarChart data={revenueData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} tickFormatter={(value) => `₹${value}`} />
+                <RechartsTooltip 
+                  cursor={{ fill: '#f1f5f9' }}
+                  contentStyle={{ borderRadius: '0.5rem', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                  formatter={(value) => [`₹${value.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`, 'Revenue']}
+                />
+                <Bar dataKey="revenue" fill="#4f46e5" radius={[4, 4, 0, 0]} maxBarSize={50} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="card">
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Inventory Value by Category</h2>
+          <div style={{ width: '100%', height: 300 }}>
+            {categoryData.length > 0 ? (
+              <ResponsiveContainer>
+                <PieChart>
+                  <Pie
+                    data={categoryData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {categoryData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <RechartsTooltip 
+                    contentStyle={{ borderRadius: '0.5rem', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                    formatter={(value) => [`₹${value.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`, 'Value']}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
+                No inventory data available
+              </div>
+            )}
+            
+            {/* Custom Legend */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', marginTop: '1rem' }}>
+              {categoryData.slice(0, 4).map((entry, index) => (
+                <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem' }}>
+                  <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: COLORS[index % COLORS.length] }}></div>
+                  <span>{entry.name}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

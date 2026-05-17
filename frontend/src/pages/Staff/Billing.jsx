@@ -26,6 +26,41 @@ const StaffBilling = () => {
   const [amountPaid, setAmountPaid] = useState('');
   const [customerSummary, setCustomerSummary] = useState(null);
 
+  // Sound Effects using Web Audio API
+  const playBeep = () => {
+    try {
+      const context = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      oscillator.connect(gain);
+      gain.connect(context.destination);
+      oscillator.type = "sine";
+      oscillator.frequency.value = 800;
+      gain.gain.value = 0.1;
+      oscillator.start();
+      setTimeout(() => oscillator.stop(), 100);
+    } catch (e) { console.error(e); }
+  };
+
+  const playChaChing = () => {
+    try {
+      const context = new (window.AudioContext || window.webkitAudioContext)();
+      const playNote = (freq, delay, duration) => {
+        const osc = context.createOscillator();
+        const gain = context.createGain();
+        osc.connect(gain);
+        gain.connect(context.destination);
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        gain.gain.value = 0.1;
+        osc.start(context.currentTime + delay);
+        osc.stop(context.currentTime + delay + duration);
+      };
+      playNote(1000, 0, 0.1);
+      playNote(1500, 0.1, 0.2);
+    } catch (e) { console.error(e); }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -77,12 +112,14 @@ const StaffBilling = () => {
         return;
       }
       setCart(cart.map(item => item.id === product.id ? { ...item, qty: item.qty + 1 } : item));
+      playBeep();
     } else {
       if (totalStock === 0) {
         alert('Out of stock!');
         return;
       }
       setCart([...cart, { ...product, qty: 1 }]);
+      playBeep();
     }
   };
 
@@ -158,6 +195,17 @@ const StaffBilling = () => {
 
       const res = await apiClient.post('/invoices', invoiceData);
       setShowInvoice(res.data);
+      
+      // Trigger confetti!
+      if (window.confetti) {
+        window.confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+      playChaChing();
+
       setCart([]);
       setSelectedCustomer(null);
       fetchData(); // Refresh stock

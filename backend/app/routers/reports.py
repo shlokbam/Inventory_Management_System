@@ -175,3 +175,27 @@ def get_staff_dashboard(db: Session = Depends(database.get_db), current_user: mo
         "recent_invoices": recent_data,
         "low_stock_alerts": low_stock_alerts
     }
+
+@router.get("/ticker")
+def get_ticker_data(db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+    # 1. Recent sales (global)
+    recent_invoices = db.query(models.Invoice).order_by(models.Invoice.created_at.desc()).limit(3).all()
+    
+    # 2. Low stock alerts (global)
+    low_stock_query = db.query(models.Product.id, models.Product.name, func.sum(models.Batch.quantity).label("total_qty")).\
+        join(models.Batch, models.Product.id == models.Batch.product_id).\
+        group_by(models.Product.id).\
+        having(func.sum(models.Batch.quantity) < 10).all()
+        
+    messages = []
+    
+    for inv in recent_invoices:
+        messages.append(f"🔥 New sale completed! Total: ₹{inv.total_amount:,.2f}")
+        
+    for r in low_stock_query:
+        messages.append(f"⚠️ Alert: {r[1]} is running low on stock ({r[2]} left)!")
+        
+    if not messages:
+        messages = ["🎉 Welcome to IMS Pro - Your smart inventory partner!"]
+        
+    return {"messages": messages}

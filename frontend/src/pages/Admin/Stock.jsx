@@ -62,7 +62,12 @@ const AdminStock = () => {
     return products.find(p => p.id === id)?.name || `ID: ${id}`;
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return (
+    <div className="loading-container">
+      <div className="spinner"></div>
+      <p style={{ marginTop: '1rem', color: 'var(--text-muted)' }}>Loading stock data...</p>
+    </div>
+  );
 
   const displayedTransactions = formData.product_id 
     ? transactions.filter(t => t.product_id === parseInt(formData.product_id))

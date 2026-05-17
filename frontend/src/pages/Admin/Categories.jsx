@@ -53,7 +53,12 @@ const AdminCategories = () => {
     return products.filter(p => p.category_id === categoryId).length;
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return (
+    <div className="loading-container">
+      <div className="spinner"></div>
+      <p style={{ marginTop: '1rem', color: 'var(--text-muted)' }}>Loading categories...</p>
+    </div>
+  );
 
   return (
     <div>

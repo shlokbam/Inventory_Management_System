@@ -14,6 +14,7 @@ import StaffBilling from './pages/Staff/Billing';
 import StaffCatalog from './pages/Staff/ProductCatalog';
 import StaffPayments from './pages/Staff/Payments';
 import Sidebar from './components/Sidebar';
+import Ticker from './components/Ticker';
 import { Menu, X } from 'lucide-react';
 import Home from './pages/Home';
 
@@ -21,7 +22,12 @@ const ProtectedRoute = ({ children, role }) => {
   const { user, loading } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   
-  if (loading) return <div>Loading...</div>;
+  if (loading) return (
+    <div className="loading-container">
+      <div className="spinner"></div>
+      <p style={{ marginTop: '1rem', color: 'var(--text-muted)' }}>Loading application...</p>
+    </div>
+  );
   if (!user) return <Navigate to="/login" />;
   if (role && user.role !== role) {
     return <Navigate to={user.role === 'admin' ? '/admin' : '/staff'} />;
@@ -29,6 +35,7 @@ const ProtectedRoute = ({ children, role }) => {
   
   return (
     <div className="layout">
+      <Ticker />
       <div className={`overlay ${isSidebarOpen ? 'active' : ''}`} onClick={() => setIsSidebarOpen(false)}></div>
       
       <div className="mobile-header">

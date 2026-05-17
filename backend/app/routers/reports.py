@@ -131,3 +131,47 @@ def get_inventory_status(db: Session = Depends(database.get_db), current_user: m
     # Sort by demand (total_sold) desc
     status_data.sort(key=lambda x: x["total_sold"], reverse=True)
     return status_data
+
+@router.get("/staff-dashboard")
+def get_staff_dashboard(db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+    now = datetime.datetime.utcnow()
+    today_start = datetime.datetime(now.year, now.month, now.day)
+    
+    # 1. Daily Stats for this staff
+    today_invoices = db.query(models.Invoice).filter(
+        models.Invoice.created_by == current_user.id,
+        models.Invoice.created_at >= today_start
+    ).all()
+    
+    total_bills = len(today_invoices)
+    total_revenue = sum(inv.total_amount for inv in today_invoices)
+    
+    # 2. Recent Bills (last 5)
+    recent_invoices = db.query(models.Invoice).filter(
+        models.Invoice.created_by == current_user.id
+    ).order_by(models.Invoice.created_at.desc()).limit(5).all()
+    
+    # Format invoices for JSON
+    recent_data = []
+    for inv in recent_invoices:
+        recent_data.append({
+            "id": inv.id,
+            "customer_name": inv.customer.name if inv.customer else "N/A",
+            "total_amount": inv.total_amount,
+            "created_at": inv.created_at.isoformat() if inv.created_at else None
+        })
+    
+    # 3. Low Stock Alerts
+    low_stock_query = db.query(models.Product.id, models.Product.name, func.sum(models.Batch.quantity).label("total_qty")).\
+        join(models.Batch, models.Product.id == models.Batch.product_id).\
+        group_by(models.Product.id).\
+        having(func.sum(models.Batch.quantity) < 10).all()
+        
+    low_stock_alerts = [{"id": r[0], "name": r[1], "quantity": r[2]} for r in low_stock_query]
+    
+    return {
+        "total_bills_today": total_bills,
+        "total_revenue_today": total_revenue,
+        "recent_invoices": recent_data,
+        "low_stock_alerts": low_stock_alerts
+    }

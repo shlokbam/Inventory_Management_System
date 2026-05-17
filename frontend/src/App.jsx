@@ -15,6 +15,7 @@ import StaffCatalog from './pages/Staff/ProductCatalog';
 import StaffPayments from './pages/Staff/Payments';
 import Sidebar from './components/Sidebar';
 import { Menu, X } from 'lucide-react';
+import Home from './pages/Home';
 
 const ProtectedRoute = ({ children, role }) => {
   const { user, loading } = useAuth();
@@ -70,7 +71,7 @@ function App() {
           <Route path="/staff/catalog" element={<ProtectedRoute role="staff"><StaffCatalog /></ProtectedRoute>} />
           <Route path="/staff/payments" element={<ProtectedRoute role="staff"><StaffPayments /></ProtectedRoute>} />
           
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/" element={<Home />} />
         </Routes>
       </Router>
     </AuthProvider>

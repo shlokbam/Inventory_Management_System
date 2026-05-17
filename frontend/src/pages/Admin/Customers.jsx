@@ -347,9 +347,9 @@ const AdminCustomers = () => {
   return (
     <div>
       {/* Page header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div className="header-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <div>
-          <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '0.25rem' }}>Customers</h1>
+          <h1 className="page-title" style={{ marginBottom: '0.25rem' }}>Customers</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
             View all registered customers and their complete purchase history.
           </p>
@@ -392,7 +392,7 @@ const AdminCustomers = () => {
           <p>No customers found.</p>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: '1.25rem' }}>
           {filtered.map(c => (
             <div
               key={c.id}

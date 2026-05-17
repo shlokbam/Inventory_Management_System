@@ -38,7 +38,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   const links = user.role === 'admin' ? adminLinks : staffLinks;
 
   return (
-    <div className={`sidebar ${isOpen ? 'open' : ''}`} style={{ display: 'flex', flexDirection: 'column', height: '100vh', position: 'sticky', top: 0 }}>
+    <div className={`sidebar ${isOpen ? 'open' : ''}`} style={{ display: 'flex', flexDirection: 'column' }}>
       <div style={{ padding: '0 0.5rem 2rem', borderBottom: '1px solid #334155', marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <Database size={28} color="#818cf8" />

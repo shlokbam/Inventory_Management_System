@@ -40,7 +40,7 @@ const AdminTransactions = () => {
       <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '2rem' }}>Transaction History</h1>
 
       <div className="table-container">
-        <table>
+        <table style={{ minWidth: '600px' }}>
           <thead>
             <tr>
               <th>Type</th>

@@ -94,7 +94,7 @@ const AdminDashboard = () => {
   return (
     <div>
       <div className="header-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Admin Dashboard</h1>
+        <h1 className="page-title">Admin Dashboard</h1>
         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
           <button onClick={() => handleExport('products')} className="btn btn-secondary" style={{ width: 'auto' }}>
             <Download size={18} /> Products CSV

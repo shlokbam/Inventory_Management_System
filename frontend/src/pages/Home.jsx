@@ -38,7 +38,7 @@ const Home = () => {
           background: 'linear-gradient(135deg, var(--bg-main) 0%, #e0e7ff 100%)' 
         }}>
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-            <h2 style={{ fontSize: '3rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '1.5rem', lineHeight: 1.2 }}>
+            <h2 className="hero-title">
               Smart Inventory Management for Modern Businesses
             </h2>
             <p style={{ fontSize: '1.25rem', color: 'var(--text-muted)', marginBottom: '2.5rem' }}>

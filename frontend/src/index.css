@@ -23,6 +23,7 @@ body {
   background-color: var(--bg-main);
   color: var(--text-main);
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 button {
@@ -78,6 +79,7 @@ input:focus {
   border-radius: 1rem;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   padding: 1.5rem;
+  min-width: 0;
 }
 
 .table-container {
@@ -121,6 +123,7 @@ td {
   display: grid;
   grid-template-columns: 260px 1fr;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .sidebar {
@@ -128,12 +131,16 @@ td {
   color: white;
   padding: 2rem 1.5rem;
   z-index: 1000;
+  height: 100vh;
+  position: sticky;
+  top: 0;
 }
 
 .main-content {
   padding: 2rem;
   background-color: var(--bg-main);
   width: 100%;
+  min-width: 0;
 }
 
 /* Mobile Responsive Styles */
@@ -256,6 +263,43 @@ td {
 
 @media (max-width: 1024px) {
   .pos-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+@media (max-width: 640px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+}
+
+.payments-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+  height: calc(100vh - 120px);
+}
+@media (max-width: 1024px) {
+  .payments-grid {
     grid-template-columns: 1fr;
     height: auto;
   }

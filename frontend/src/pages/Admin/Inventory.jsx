@@ -39,7 +39,7 @@ const AdminInventory = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="header-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Inventory Analysis</h1>
           <p style={{ color: 'var(--text-muted)' }}>Track stock levels and sales demand</p>
@@ -59,7 +59,7 @@ const AdminInventory = () => {
       </div>
 
       {/* Summary Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
+      <div className="stat-grid">
         <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div style={{ background: '#e0e7ff', padding: '1rem', borderRadius: '0.75rem', color: '#4338ca' }}>
             <Package size={24} />
@@ -102,7 +102,8 @@ const AdminInventory = () => {
 
       {/* Main Table */}
       <div className="card">
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <div className="table-container">
+          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
           <thead>
             <tr style={{ textAlign: 'left', borderBottom: '2px solid var(--border)' }}>
               <th style={{ padding: '1rem' }}>Product Info</th>
@@ -170,6 +171,7 @@ const AdminInventory = () => {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

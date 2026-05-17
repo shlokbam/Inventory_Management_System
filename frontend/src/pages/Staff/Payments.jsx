@@ -85,7 +85,7 @@ const StaffPayments = () => {
   if (loading) return <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem' }}><Loader2 className="animate-spin" /></div>;
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '2rem', height: 'calc(100vh - 120px)' }}>
+    <div className="payments-grid">
       {/* Customer List */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         <div className="card">
@@ -187,7 +187,7 @@ const StaffPayments = () => {
                 <History size={20} /> Payment History
               </h3>
               <div className="table-container">
-                <table>
+                <table style={{ minWidth: '600px' }}>
                   <thead>
                     <tr>
                       <th>Time & Date</th>

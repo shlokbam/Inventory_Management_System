@@ -11,7 +11,11 @@ if SQLALCHEMY_DATABASE_URL and SQLALCHEMY_DATABASE_URL.startswith("postgres://")
 
 # For PostgreSQL, we don't need check_same_thread
 if SQLALCHEMY_DATABASE_URL and SQLALCHEMY_DATABASE_URL.startswith("postgresql"):
-    engine = create_engine(SQLALCHEMY_DATABASE_URL)
+    engine = create_engine(
+        SQLALCHEMY_DATABASE_URL, 
+        pool_pre_ping=True, 
+        pool_recycle=300
+    )
 else:
     engine = create_engine(
         SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}

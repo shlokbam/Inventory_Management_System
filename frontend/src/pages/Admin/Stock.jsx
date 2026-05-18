@@ -39,8 +39,6 @@ const AdminStock = () => {
       setLoading(false);
     }
   };
-    }
-  };
 
   useEffect(() => {
     fetchData();

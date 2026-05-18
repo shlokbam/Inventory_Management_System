@@ -33,7 +33,12 @@ const AdminTransactions = () => {
     return products.find(p => p.id === id)?.name || `ID: ${id}`;
   };
 
-  if (loading) return <div>Loading logs...</div>;
+  if (loading) return (
+    <div className="loading-container">
+      <div className="spinner"></div>
+      <p style={{ marginTop: '1rem', color: 'var(--text-muted)' }}>Loading transactions...</p>
+    </div>
+  );
 
   return (
     <div>

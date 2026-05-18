@@ -120,7 +120,7 @@ class Invoice(InvoiceBase):
 
 # Transaction
 class TransactionBase(BaseModel):
-    product_id: int
+    product_id: Optional[int] = None
     type: str
     quantity: int
 

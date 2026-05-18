@@ -22,17 +22,23 @@ const AdminStock = () => {
   };
 
   const fetchData = async () => {
+    setLoading(true);
     try {
-      const [pRes, tRes] = await Promise.all([
-        apiClient.get('/products'),
-        apiClient.get('/transactions')
-      ]);
+      const pRes = await apiClient.get('/products');
       setProducts(pRes.data);
+    } catch (err) {
+      console.error("Error fetching products:", err);
+    }
+
+    try {
+      const tRes = await apiClient.get('/transactions');
       setTransactions(tRes.data.filter(t => t.type === 'IN').slice(0, 10));
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching transactions:", err);
     } finally {
       setLoading(false);
+    }
+  };
     }
   };
 

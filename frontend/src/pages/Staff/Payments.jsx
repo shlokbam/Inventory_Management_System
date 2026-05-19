@@ -86,6 +86,39 @@ const StaffPayments = () => {
 
   return (
     <div className="payments-grid">
+      <style>{`
+        /* Local responsive CSS rules for Payments page */
+        .payments-customer-list {
+          max-height: none;
+          transition: max-height 0.2s ease;
+        }
+        .payments-form {
+          display: flex;
+          gap: 1rem;
+          flex-direction: row;
+        }
+        .payments-form input {
+          width: 100%;
+        }
+        .payments-form button {
+          white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+          .payments-customer-list {
+            max-height: 250px !important;
+          }
+          .payments-form {
+            flex-direction: column !important;
+            gap: 0.75rem !important;
+          }
+          .payments-form button {
+            width: 100% !important;
+            justify-content: center !important;
+            padding: 0.875rem !important;
+          }
+        }
+      `}</style>
       {/* Customer List */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         <div className="card">
@@ -100,7 +133,7 @@ const StaffPayments = () => {
           </div>
         </div>
 
-        <div className="card" style={{ flex: 1, overflowY: 'auto', padding: 0 }}>
+        <div className="card payments-customer-list" style={{ flex: 1, overflowY: 'auto', padding: 0 }}>
           {filteredCustomers.map(c => (
             <div 
               key={c.id} 
@@ -162,7 +195,7 @@ const StaffPayments = () => {
                 </div>
               )}
 
-              <form onSubmit={handlePayment} style={{ display: 'flex', gap: '1rem' }}>
+              <form onSubmit={handlePayment} className="payments-form">
                 <div style={{ flex: 1, position: 'relative' }}>
                   <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', fontWeight: 'bold' }}>₹</span>
                   <input 

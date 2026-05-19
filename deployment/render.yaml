@@ -1,0 +1,32 @@
+services:
+  # -------------------------------------------------------------
+  # 🚀 FastAPI Backend Web Service
+  # -------------------------------------------------------------
+  - type: web
+    name: ims-backend-service
+    env: python
+    region: singapore # standard default region
+    plan: free # uses Render Free Tier
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true # generates a secure JWT secret automatically
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false # placeholder to be configured by user
+      - key: DATABASE_URL
+        value: sqlite:///./app/inventory.db # Default sqlite connection
+
+  # -------------------------------------------------------------
+  # 🎨 Vite React Static Frontend Service
+  # -------------------------------------------------------------
+  - type: web
+    name: ims-frontend-static
+    env: static
+    region: singapore
+    plan: free
+    buildCommand: npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://ims-backend-7c60.onrender.com # Live backend API

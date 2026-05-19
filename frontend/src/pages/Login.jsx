@@ -7,16 +7,31 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
+    setShowWarning(false);
+
+    // Set a timer to show the cold-start helper message after 3 seconds
+    const timer = setTimeout(() => {
+      setShowWarning(true);
+    }, 3000);
+
     try {
       const user = await login(username, password);
+      clearTimeout(timer);
       if (user.role === 'admin') navigate('/admin');
       else navigate('/staff');
     } catch (err) {
+      clearTimeout(timer);
+      setLoading(false);
+      setShowWarning(false);
       setError('Invalid username or password');
     }
   };
@@ -34,6 +49,25 @@ const Login = () => {
         
         {error && <div style={{ background: '#fee2e2', color: '#b91c1c', padding: '0.75rem', borderRadius: '0.5rem', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
         
+        {showWarning && (
+          <div style={{ 
+            background: '#fffbeb', 
+            color: '#b45309', 
+            padding: '0.75rem 1rem', 
+            borderRadius: '0.5rem', 
+            marginBottom: '1.25rem', 
+            fontSize: '0.875rem', 
+            textAlign: 'left',
+            border: '1px solid #fef3c7',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.25rem'
+          }}>
+            <strong style={{ fontWeight: '600' }}>⚡ Server Waking Up...</strong>
+            <span>Our server sleeps after inactivity. This first login request may take 30-60 seconds. Thank you for your patience!</span>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div>
             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Username</label>
@@ -43,6 +77,7 @@ const Login = () => {
               style={{ width: '100%' }}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              disabled={loading}
               required
             />
           </div>
@@ -54,11 +89,36 @@ const Login = () => {
               style={{ width: '100%' }}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '1rem' }}>
-            Login to Dashboard
+          <button 
+            type="submit" 
+            className="btn btn-primary" 
+            style={{ 
+              width: '100%', 
+              padding: '1rem',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '0.5rem',
+              opacity: loading ? 0.7 : 1,
+              cursor: loading ? 'not-allowed' : 'pointer'
+            }}
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <svg style={{ width: '18px', height: '18px', animation: 'spin 1s linear infinite' }} viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" style={{ opacity: 0.25 }} />
+                  <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" style={{ opacity: 0.75 }} />
+                </svg>
+                <span>Logging in...</span>
+              </>
+            ) : (
+              'Login to Dashboard'
+            )}
           </button>
         </form>
         

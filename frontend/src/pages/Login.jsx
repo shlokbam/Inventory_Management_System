@@ -125,6 +125,7 @@ const Login = () => {
         <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
           <p>Admin: admin / admin123</p>
           <p>Staff: staff / staff123</p>
+          <p style={{ marginTop: '1rem' }}><a href="https://shlokbam.in" target="_blank" rel="noopener" style={{ color: 'inherit', opacity: 0.75 }}>Built by Shlok Bam · shlokbam.in</a></p>
         </div>
       </div>
     </div>

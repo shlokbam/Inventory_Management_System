@@ -51,3 +51,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 This project is licensed under the MIT License.
+
+---
+
+Built by [Shlok Bam](https://shlokbam.in), see more projects on my portfolio.

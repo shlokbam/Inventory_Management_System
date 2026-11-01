@@ -100,7 +100,7 @@ const Home = () => {
         </div>
         <p style={{ color: '#94a3b8', marginBottom: '2rem' }}>Making inventory management effortless.</p>
         <div style={{ borderTop: '1px solid #334155', paddingTop: '2rem', color: '#64748b', fontSize: '0.875rem' }}>
-          &copy; {new Date().getFullYear()} IMS Pro. All rights reserved.
+          &copy; {new Date().getFullYear()} IMS Pro. All rights reserved. &middot; <a href="https://shlokbam.in" target="_blank" rel="noopener" style={{ color: 'inherit', opacity: 0.75 }}>Built by Shlok Bam · shlokbam.in</a>
         </div>
       </footer>
     </div>

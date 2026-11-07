@@ -1,57 +1,56 @@
-# 📦 Inventory Management System (IMS)
+<div align="center">
 
-A modern, full-stack Inventory Management System designed for efficiency and ease of use. This system features real-time stock tracking, professional invoice generation, and automated customer notifications.
+<img src=".github/assets/banner.svg" alt="Inventory Management System: stock, bills and udhari in one place" width="100%">
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=flat&logo=fastapi)
-![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat&logo=postgresql)
+<img src="https://img.shields.io/badge/live-render-FF5A1F?style=flat-square&labelColor=2A2926" alt="live: render">
+<img src="https://img.shields.io/badge/api-FastAPI-F2EFE7?style=flat-square&labelColor=2A2926" alt="api: FastAPI">
+<img src="https://img.shields.io/badge/web-React%20%2B%20Tailwind-F2EFE7?style=flat-square&labelColor=2A2926" alt="web: React + Tailwind">
+<img src="https://img.shields.io/badge/db-PostgreSQL%20%C2%B7%20Neon-F2EFE7?style=flat-square&labelColor=2A2926" alt="db: PostgreSQL · Neon">
+<img src="https://img.shields.io/badge/android-APK-F2EFE7?style=flat-square&labelColor=2A2926" alt="android: APK">
 
-## ✨ Key Features
+<a href="https://ims-frontend-udaw.onrender.com/login">Live app</a> · <a href="#what-it-does">What it does</a> · <a href="#stack">Stack</a> · <a href="#run-it">Run it</a>
 
-- **🚀 Real-time Inventory**: Track products, categories, and batches with automatic FIFO (First-In-First-Out) stock reduction.
-- **📄 Professional Invoices**: Generate professional PDF receipts automatically for every transaction.
-- **🤖 Telegram Integration**: Instant customer notifications via Telegram, including text summaries and PDF attachments.
-- **👥 Role-Based Access**: Secure authentication with JWT tokens and separate roles for `Admin` and `Staff`.
-- **📊 Financial Tracking**: Manage customer ledgers, pending balances (Udhari), and transaction history.
-- **📈 Business Reports**: Gain insights with automated reporting on sales and inventory levels.
+</div>
 
-## 🛠️ Technology Stack
+An inventory and billing app for a small shop: stock in batches, PDF invoices sent to customers on Telegram, and a ledger for credit (udhari). Runs on the web and as an Android app.
 
-- **Backend**: FastAPI (Python), SQLAlchemy, PostgreSQL, Pydantic.
-- **Frontend**: React (Vite), TailwindCSS, Lucide Icons, Recharts.
-- **Infrastructure**: Render (Deployment), Neon.tech (Database), Telegram Bot API.
+## What it does
 
-## 🚀 Quick Start (Local Development)
+- **Inventory:** products, categories and batches, with stock taken out first-in, first-out.
+- **Billing:** a PDF invoice for every sale, sent to the customer over Telegram with a short text summary.
+- **Ledger:** customer accounts, pending balances (udhari) and full transaction history.
+- **Roles:** JWT sign-in with separate admin and staff permissions.
+- **Reports:** sales and stock-level charts.
+- **Mobile:** the same React app packaged for Android with Capacitor ([`mobile/app-debug.apk`](mobile/app-debug.apk)).
 
-### Backend
-1. `cd backend`
-2. `pip install -r requirements.txt`
-3. `uvicorn app.main:app --reload`
+## Stack
 
-### Frontend
-1. `cd frontend`
-2. `npm install`
-3. `npm run dev`
+| Area | Tools |
+| :--- | :--- |
+| API | FastAPI, SQLAlchemy, Pydantic, JWT |
+| Web | React (Vite), Tailwind CSS, Recharts, Lucide icons |
+| Data and hosting | PostgreSQL on Neon, Render |
+| Messaging | Telegram Bot API |
 
-## 🌐 Deployment
+## Run it
 
-The project is optimized for one-click deployment on **Render**.
+```bash
+# backend · env: DATABASE_URL, SECRET_KEY, TELEGRAM_BOT_TOKEN
+cd backend && pip install -r requirements.txt
+uvicorn app.main:app --reload
 
-### Environment Variables
-| Key | Description |
-|-----|-------------|
-| `DATABASE_URL` | PostgreSQL connection string |
-| `SECRET_KEY` | JWT signing key |
-| `TELEGRAM_BOT_TOKEN` | Token from @BotFather |
-| `VITE_API_URL` | Backend URL for the frontend |
+# frontend · env: VITE_API_URL
+cd frontend && npm install && npm run dev
+```
 
-## 🤝 Contributing
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-This project is licensed under the MIT License.
+Render deployment: [`deployment/render.yaml`](deployment/render.yaml) and [`deployment/deployment_instructions.md`](deployment/deployment_instructions.md).
 
 ---
 
-Built by [Shlok Bam](https://shlokbam.in), see more projects on my portfolio.
+<div align="center">
+
+<a href="https://shlokbam.in"><img src=".github/assets/footer.svg" alt="Built by Shlok Bam" width="100%"></a>
+
+<a href="https://shlokbam.in">shlokbam.in</a> · <a href="https://www.linkedin.com/in/shlokbam/">LinkedIn</a> · <a href="https://github.com/shlokbam">More projects</a>
+
+</div>
